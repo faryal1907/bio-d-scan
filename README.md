@@ -1,3 +1,5 @@
+
+
 ## Features
 
 ### Backend Features
@@ -20,6 +22,58 @@
 - **Temperature cycles** following daily patterns
 - **Humidity variations** inversely related to temperature
 - **Bee activity** based on time and environmental conditions
+
+## Dataflow Overview
+
+### How Data Moves Through the Application
+
+1. **User Interaction (Frontend UI)**
+   - The user interacts with the frontend (Next.js/React), such as viewing dashboards or submitting forms.
+
+2. **Frontend API Request**
+   - The frontend makes a request to its own API route (e.g., `/api/data`).
+   - Example: `fetch('/api/data')` in React components.
+
+3. **Frontend API Route (Proxy Layer)**
+   - The Next.js API route receives the request and acts as a proxy.
+   - It forwards the request to the backend FastAPI server (e.g., `http://localhost:8000/api/bee-data`).
+
+4. **Backend Processing**
+   - The FastAPI backend receives the request.
+   - If MongoDB is configured, it fetches real data from the database.
+   - If not, it generates and returns sample/proxy data.
+
+5. **Backend Response**
+   - The backend sends the data (JSON) back to the frontend API route.
+
+6. **Frontend API Route Response**
+   - The frontend API route receives the backend's response and forwards it to the original frontend component.
+
+7. **UI Update**
+   - The React component receives the data and updates the UI (tables, charts, dashboards, etc.).
+
+
+### Dataflow Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend_UI as Frontend UI (React)
+    participant Frontend_API as Frontend API Route (/api/data)
+    participant Backend as Backend API (FastAPI)
+    participant DB as MongoDB (optional)
+
+    User->>Frontend_UI: Interact (view dashboard, submit form)
+    Frontend_UI->>Frontend_API: fetch('/api/data')
+    Frontend_API->>Backend: GET /api/bee-data
+    Backend->>DB: (optional) Query MongoDB
+    DB-->>Backend: Data (if MongoDB used)
+    Backend-->>Frontend_API: JSON data
+    Frontend_API-->>Frontend_UI: JSON data
+    Frontend_UI-->>User: Display data (charts, tables, etc.)
+```
+
+**Summary:** The frontend never talks directly to the backend; it always goes through its own API routes, which act as a bridge/proxy. Data flows: User → Frontend UI → Frontend API Route → Backend API → (MongoDB) → Backend API → Frontend API Route → Frontend UI → User.
 
 ## 🛠️ Technology Stack
 
@@ -209,13 +263,3 @@ For support and questions:
 ---
 
 **Note**: This project uses proxy data for development. For production deployment, configure real data sources and MongoDB connections.
-
-in backend:
-python -m uvicorn app.main:app --reload
-
-to activate venv:
-.\venv\Scripts\Activate.ps1
-
-to test database connection:
-python -c "from app.database import test_connection; import asyncio; asyncio.run(test_connection())"
-
