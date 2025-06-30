@@ -1,6 +1,6 @@
 # PROJECT STRUCTURE
 
-bio-d-scan-fullstack/
+bio-d-sca/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
@@ -10,7 +10,7 @@ bio-d-scan-fullstack/
 │   │   └── api.py
 │   ├── requirements.txt
 │   └── README.md
-├── frontend/
+├── bio-d-scan (frontend)/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
@@ -22,3 +22,12 @@ bio-d-scan-fullstack/
 │   └── README.md
 ├── .gitignore
 └── README.md
+
+in backend:
+python -m uvicorn app.main:app --reload
+
+to activate venv:
+.\venv\Scripts\Activate.ps1
+
+to test database connection:
+python -c "from app.database import test_connection; import asyncio; asyncio.run(test_connection())"

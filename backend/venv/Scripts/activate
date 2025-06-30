@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Laptop\Desktop\bio-d-scan-backend\bio-d-scan\backend\venv"
+VIRTUAL_ENV="C:\Users\Laptop\Desktop\bio-d-scan\backend\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
